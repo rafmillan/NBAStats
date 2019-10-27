@@ -4,25 +4,18 @@ from csv import writer
 
 print('Trae Young: ')
 response = requests.get('https://www.espn.com/nba/player/_/id/4277905/trae-young')
-
 soup = BeautifulSoup(response.text, 'html.parser')
 
-statName = soup.find_all(class_='Table__TR Table__even')[2]
-stats = soup.find_all(class_='Table__TR Table__TR--sm Table__even')[3]
+headers = {'GP', 'MIN', 'FG%', '3P%', 'FT%', 'REB',	'AST', 'BLK', 'STL', 'PF', 'TO', 'PTS'}
+
+stats = soup.find_all(class_='Table__TR Table__TR--sm Table__even')[4]
 statsList = []
-headers = []
 
 
 i = 0;
-for name in statName:
-	name = statName.find_all(class_='Table__TH')[i].get_text()
-	headers.append(name)
-
-	for stat in stats:
-		stat = stats.find_all(class_='Table__TD')[i].get_text()
-		statsList.append(float(stat))
-		print(name, ":", stat)
-		break;
+for stat in stats:
+	stat = stats.find_all(class_='Table__TD')[i].get_text()
+	statsList.append(stat)
 	i+=1
 
 with open('stats.csv', 'w') as csv_file:
@@ -32,6 +25,7 @@ with open('stats.csv', 'w') as csv_file:
 
 print(headers)
 print(statsList)
+#print(statsList)
 
 
 
